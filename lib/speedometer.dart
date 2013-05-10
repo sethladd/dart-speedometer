@@ -286,9 +286,9 @@ class Speedometer {
         endOfGreen = 200,
         endOfOrange = 280;
 
-    _drawSpeedometerPart(1.0, "rgb(82, 240, 55)", startOfGreen);
-    _drawSpeedometerPart(0.9, "rgb(198, 111, 0)", endOfGreen);
-    _drawSpeedometerPart(0.9, "rgb(255, 0, 0)", endOfOrange);
+    _drawSpeedometerPart(1.0, "rgb(0, 153, 37)", startOfGreen);
+    _drawSpeedometerPart(0.9, "rgb(238, 178, 17)", endOfGreen);
+    _drawSpeedometerPart(0.9, "rgb(213, 25, 37)", endOfOrange);
   }
 
   _drawSpeedometerPart(double alphaValue, String strokeStyle, int startPos) {
@@ -354,17 +354,18 @@ class Speedometer {
           toX = (centerX - radius) + endNeedleX,
           toY = (centerY - radius) + endNeedleY;
 
+    ctx.globalAlpha = 1.0;
     _drawLine(alpha: 0.6,
-             lineWidth: 5,
-             fillStyle: "rgb(255,0,0)",
+             lineWidth: 15,
+             fillStyle: "rgba(255,0,0, 255)",
              fromX: fromX,
-             fromY: fromY,
+             fromY: fromY-5,
              toX: toX,
              toY: toY);
 
     // Two circle to draw the dial at the base (give its a nice effect?)
-    _drawNeedleDial(0.6, "rgb(127, 127, 127)", "rgb(255,255,255)");
-    _drawNeedleDial(0.2, "rgb(127, 127, 127)", "rgb(127,127,127)");
+    _drawNeedleDial(0.8, "rgb(127, 127, 127)", "rgb(255,255,255)");
+    _drawNeedleDial(0.4, "rgb(127, 127, 127)", "rgb(127,127,127)");
 
   }
 
