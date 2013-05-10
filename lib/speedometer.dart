@@ -10,7 +10,7 @@ class Speedometer {
   final int outerRadius;
   int levelRadius;
   
-  Speedometer(canvas, {this.centerX: 210, this.centerY: 210, this.radius: 140, this.outerRadius: 200}) :
+  Speedometer(canvas, {this.centerX: 210, this.centerY: 210, this.radius: 200, this.outerRadius: 200}) :
       canvas = canvas,
       ctx = canvas.context2D {
     levelRadius = radius - 10;
