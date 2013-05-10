@@ -22,7 +22,7 @@ class Speedometer {
     _drawBackground();
     _drawSmallTickMarks();
     _drawLargeTickMarks();
-    _drawTextMarkers();
+    //_drawTextMarkers();
     _drawSpeedometerColourArc();
     _drawNeedle(speed);
   }
