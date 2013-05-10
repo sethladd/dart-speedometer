@@ -76,7 +76,7 @@ class Speedometer {
      */
  
     ctx.globalAlpha = 0.2;
-    ctx.fillStyle = "rgb(0,0,0)";
+    ctx.fillStyle = "rgb(255,255,255)";
  
     // Draw semi-transparent circles
     for (var i = 170; i < 180 ; i++) {
@@ -206,7 +206,7 @@ class Speedometer {
 
   double _degToRad(angle) => ((angle * Math.PI) / 180);
 
-  _drawLine({double alpha, int lineWidth, int fillStyle, int fromX, int fromY, int toX, int toY}) {
+  _drawLine({alpha, int lineWidth, fillStyle, fromX, fromY, toX, toY}) {
     // Draw a line using the line object passed in
     ctx.beginPath();
 
