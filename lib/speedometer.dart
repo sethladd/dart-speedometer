@@ -16,13 +16,15 @@ class Speedometer {
     levelRadius = radius - 10;
   }
   
-  void draw() {
+  void draw(double speed) {
     _drawOuterMetalicArc();
     _drawInnerMetalicArc();
     _drawBackground();
     _drawSmallTickMarks();
     _drawLargeTickMarks();
     _drawTextMarkers();
+    _drawSpeedometerColourArc();
+    _drawNeedle(speed);
   }
   
   _drawOuterMetalicArc() {
@@ -271,5 +273,115 @@ class Speedometer {
     }
 
       ctx.stroke();
+  }
+
+  _drawSpeedometerColourArc() {
+    /* Draws the colour arc.  Three different colours
+     * used here; thus, same arc drawn 3 times with
+     * different colours.
+     * TODO: Gradient possible?
+     */
+
+    var startOfGreen = 10,
+        endOfGreen = 200,
+        endOfOrange = 280;
+
+    _drawSpeedometerPart(1.0, "rgb(82, 240, 55)", startOfGreen);
+    _drawSpeedometerPart(0.9, "rgb(198, 111, 0)", endOfGreen);
+    _drawSpeedometerPart(0.9, "rgb(255, 0, 0)", endOfOrange);
+  }
+
+  _drawSpeedometerPart(double alphaValue, String strokeStyle, int startPos) {
+    /* Draw part of the arc that represents
+    * the colour speedometer arc
+    */
+
+    ctx.beginPath();
+
+    ctx.globalAlpha = alphaValue;
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = strokeStyle;
+
+    ctx.arc(centerX,
+      centerY,
+      levelRadius,
+      Math.PI + (Math.PI / 360 * startPos),
+      0 - (Math.PI / 360 * 10),
+      false);
+
+    ctx.stroke();
+  }
+
+  _drawNeedleDial(double alphaValue, String strokeStyle, String fillStyle) {
+    /* Draws the metallic dial that covers the base of the
+    * needle.
+    */
+
+    ctx.globalAlpha = alphaValue;
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = strokeStyle;
+    ctx.fillStyle = fillStyle;
+
+    // Draw several transparent circles with alpha
+    for (var i = 0; i < 30; i++) {
+
+      ctx.beginPath();
+      ctx.arc(centerX,
+        centerY,
+        i,
+        0,
+        Math.PI,
+        true);
+
+      ctx.fill();
+      ctx.stroke();
+    }
+  }
+
+  _drawNeedle(double speed) {
+    /* Draw the needle in a nice read colour at the
+    * angle that represents the speed value.
+    */
+
+    var iSpeedAsAngle = _convertSpeedToAngle(speed),
+        iSpeedAsAngleRad = _degToRad(iSpeedAsAngle),
+          innerTickX = radius - (Math.cos(iSpeedAsAngleRad) * 20),
+          innerTickY = radius - (Math.sin(iSpeedAsAngleRad) * 20),
+          fromX = (centerX - radius) + innerTickX,
+          fromY = (centerY - radius) + innerTickY,
+          endNeedleX = radius - (Math.cos(iSpeedAsAngleRad) * radius),
+          endNeedleY = radius - (Math.sin(iSpeedAsAngleRad) * radius),
+          toX = (centerX - radius) + endNeedleX,
+          toY = (centerY - radius) + endNeedleY;
+
+    _drawLine(alpha: 0.6,
+             lineWidth: 5,
+             fillStyle: "rgb(255,0,0)",
+             fromX: fromX,
+             fromY: fromY,
+             toX: toX,
+             toY: toY);
+
+    // Two circle to draw the dial at the base (give its a nice effect?)
+    _drawNeedleDial(0.6, "rgb(127, 127, 127)", "rgb(255,255,255)");
+    _drawNeedleDial(0.2, "rgb(127, 127, 127)", "rgb(127,127,127)");
+
+  }
+
+  double _convertSpeedToAngle(double speed) {
+    /* Helper function to convert a speed to the 
+    * equivelant angle.
+    */
+    var iSpeed = (speed / 10),
+        iSpeedAsAngle = ((iSpeed * 20) + 10) % 180;
+
+    // Ensure the angle is within range
+    if (iSpeedAsAngle > 180) {
+          iSpeedAsAngle = iSpeedAsAngle - 180;
+      } else if (iSpeedAsAngle < 0) {
+          iSpeedAsAngle = iSpeedAsAngle + 180;
+      }
+
+    return iSpeedAsAngle;
   }
 }
